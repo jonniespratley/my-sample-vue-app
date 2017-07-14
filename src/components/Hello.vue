@@ -1,3 +1,8 @@
+<docs>
+  #Hello Component
+  This is the docs block inside the `Hello.vue` file.
+</docs>
+
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>

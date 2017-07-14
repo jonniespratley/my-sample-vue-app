@@ -18,6 +18,8 @@ module.exports = merge(baseWebpackConfig, {
   // cheap-module-eval-source-map is faster for development
   devtool: '#cheap-module-eval-source-map',
   plugins: [
+    // output all docs into a single file
+    new ExtractTextPlugin('docs.md'),
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),
