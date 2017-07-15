@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Cars from '@/components/Cars'
 import Hello from '@/components/Hello'
 import About from '@/components/About'
 
@@ -10,7 +11,20 @@ export default new Router({
     {
       path: '/',
       name: 'Hello',
-      component: Hello
+      component: Hello,
+      beforeEnter: (to, from, next) => {
+        console.log('beforeEnter', to, from)
+        next()
+      }
+    },
+    {
+      path: '/cars',
+      name: 'Cars',
+      component: Cars,
+      beforeEnter: (to, from, next) => {
+        console.log('beforeEnter', to, from)
+        next()
+      }
     },
     {
       path: '/about',
