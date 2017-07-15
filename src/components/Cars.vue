@@ -6,37 +6,50 @@
 <div class="cars">
   <h1>{{ msg }}</h1>
   <p>This component has scoped styles and uses SASS for the pre-processor!</p>
+  <ul>
+    <li v-for="car in cars.rows">
+      <router-link :to="{ name: 'car', params: { carId: car.id }}">{{car.key}}</router-link>
+
+    </li>
+  </ul>
 </div>
 </template>
 
 <script>
+import CarsService from '@/services/CarsService'
 export default {
   name: 'cars',
   data () {
     return {
-      msg: 'Welcome to the Page'
+      msg: 'Welcome to the Cars Page',
+      cars: []
     }
   },
   beforeRouteEnter (to, from, next) {
-    // called before the route that renders this component is confirmed.
-    // does NOT have access to `this` component instance,
-    // because it has not been created yet when this guard is called!
-    console.log('beforeRouteEnter')
+    console.log('beforeRouteEnter', to, from)
+    CarsService.getCars().then((resp) => {
+      next(vm => vm.setData(null, resp))
+    }).catch((err) => {
+      next(vm => vm.setData(err, null))
+    })
   },
   beforeRouteUpdate (to, from, next) {
-    // called when the route that renders this component has changed,
-    // but this component is reused in the new route.
-    // For example, for a route with dynamic params /foo/:id, when we
-    // navigate between /foo/1 and /foo/2, the same Foo component instance
-    // will be reused, and this hook will be called when that happens.
-    // has access to `this` component instance.
-    console.log('beforeRouteUpdate')
+    console.log('beforeRouteUpdate', to, from)
+    next()
   },
   beforeRouteLeave (to, from, next) {
-    // called when the route that renders this component is about to
-    // be navigated away from.
-    // has access to `this` component instance.
     console.log('beforeRouteLeave')
+    next()
+  },
+  methods: {
+    setData (err, data) {
+      console.log('setData', err, data)
+      if (err) {
+        this.error = err.toString()
+      } else {
+        this.cars = data
+      }
+    }
   }
 }
 </script>
